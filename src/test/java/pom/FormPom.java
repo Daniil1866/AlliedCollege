@@ -1,0 +1,100 @@
+package pom;
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class FormPom {
+
+    WebDriver driver;
+    JavascriptExecutor js;
+
+    @FindBy(xpath = "//*[@id='firstName']")
+    WebElement firstName;
+
+    @FindBy(xpath = "//*[@id='lastName']")
+    WebElement lastName;
+
+    @FindBy(xpath = "//*[@id='userEmail']")
+    WebElement email;
+
+    @FindBy(xpath = "//*[@id='dateOfBirthInput']")
+    WebElement DOB;
+
+    @FindBy(xpath = "//*[@id='userNumber']")
+    WebElement number;
+
+    @FindBy(xpath = "//*[@id='subjectsContainer']")
+    WebElement subject;
+
+    public FormPom(WebDriver driver) {
+        this.driver = driver;
+        this.js = (JavascriptExecutor) driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public void setFirstName(String firstNameParam) {
+        firstName.clear();
+        firstName.sendKeys(firstNameParam);
+    }
+
+    public void setLastName(String lastNameParam) {
+        lastName.clear();
+        lastName.sendKeys(lastNameParam);
+    }
+
+    public void setUserEmail(String userEmailParam) {
+        email.clear();
+        email.sendKeys(userEmailParam);
+    }
+
+    public void setUserGender(String genderParam) {
+        WebElement gender = driver.findElement(By.xpath("//*[text()='" + genderParam + "']"));
+        gender.click();
+    }
+
+    public void setUserNumber(String numberParam) {
+        number.clear();
+        number.sendKeys(numberParam);
+    }
+
+    public void setUserDOB(String userDOBParam) {
+        DOB.sendKeys(Keys.COMMAND, "a");
+        DOB.sendKeys(userDOBParam);
+        DOB.sendKeys(Keys.ENTER);
+    }
+
+    public void setUserSubject(String userSubjectParam) throws InterruptedException {
+        subject.sendKeys(userSubjectParam);
+        Thread.sleep(1000);
+        subject.click();
+        subject.sendKeys(Keys.ENTER);
+        System.out.println();
+    }
+
+    public void closeAdvert() {
+        try {
+            js.executeScript("var elem = document.evaluate(\"//*[@id='adplus-anchor']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;" +
+                    "elem.parentNode.removeChild(elem);");
+        } catch (Exception ignored) {
+        }
+        try {
+            js.executeScript("var elem = document.evaluate(\"//footer\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;" +
+                    "elem.parentNode.removeChild(elem);");
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void scrollToElement(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    public void scrollToDOB(){
+        scrollToElement(DOB);
+    }
+
+    public void scrollToFirstName(){
+        scrollToElement(firstName);
+    }
+}
