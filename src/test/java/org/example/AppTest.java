@@ -12,7 +12,7 @@ import pom.FormPom;   // your Page Object
 public class AppTest {
 
     WebDriver driver;
-    
+
     static public String URL = "https://demoqa.com/automation-practice-form";
     static public String USER_NAME = "Daniil";
     static public String USER_SURNAME = "Sahov";
