@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import static javax.swing.UIManager.put;
 
@@ -22,12 +23,15 @@ public class Driver {
 
     public static RemoteWebDriver getRemoteDriver() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--headless=new");
 
-        // **Unique user data directory to avoid conflicts**
-        options.addArguments("--user-data-dir=/tmp/unique_profile_" + System.currentTimeMillis());
+        Map<String, Object> selenoidOptions = new HashMap<>();
+        selenoidOptions.put("enableVNC", true);
+        selenoidOptions.put("enableVideo", true);
+        selenoidOptions.put("enableLog", true);
+        selenoidOptions.put("name", "Test badge");
+        selenoidOptions.put("sessionTimeout", "15m");
+
+        options.setCapability("selenoid:options", selenoidOptions);
 
         RemoteWebDriver driver = null;
         try {
@@ -35,6 +39,7 @@ public class Driver {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
         return driver;
     }
 }
