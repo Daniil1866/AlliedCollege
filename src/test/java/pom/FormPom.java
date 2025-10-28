@@ -75,7 +75,11 @@ public class FormPom {
     }
 
     public void setUserDOB(String userDOBParam) {
-        DOB.sendKeys(Keys.COMMAND, "a");
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            DOB.sendKeys(Keys.COMMAND, "a");
+        } else {
+            DOB.sendKeys(Keys.CONTROL, "a");
+        }
         DOB.sendKeys(userDOBParam);
         DOB.sendKeys(Keys.ENTER);
     }
