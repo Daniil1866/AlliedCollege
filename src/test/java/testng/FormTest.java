@@ -15,7 +15,7 @@ public class FormTest {
 
     @BeforeClass
     public void beforeTest() {
-        driver = Driver.getLocalDriver();
+        driver = Driver.getRemoteDriver();
         driver.manage().window().maximize();
     }
 
