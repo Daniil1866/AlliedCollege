@@ -8,6 +8,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,32 +22,19 @@ public class Driver {
 
     public static RemoteWebDriver getRemoteDriver() {
         ChromeOptions options = new ChromeOptions();
-        options.setCapability("browserVersion", "128.0");
-        options.setCapability("selenoid:options", new HashMap<String, Object>() {{
-            /* How to add test badge */
-            put("name", "Test badge...");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless=new");
 
-            /* How to set session timeout */
-            put("sessionTimeout", "15m");
+        // **Unique user data directory to avoid conflicts**
+        options.addArguments("--user-data-dir=/tmp/unique_profile_" + System.currentTimeMillis());
 
-            /* How to set timezone */
-            put("env", new ArrayList<String>() {{
-                add("TZ=UTC");
-            }});
-
-            /* How to enable video recording */
-            put("enableVideo", true);
-            put("enableVNC", true);
-            put("enableLog", true);
-            put("noSandbox", true);
-            put("headless", true);
-        }});
-        RemoteWebDriver remoteDriver = null;
+        RemoteWebDriver driver = null;
         try {
-            remoteDriver = new RemoteWebDriver(URI.create("http://127.0.0.1:4444/wd/hub").toURL(), options);
+            driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        return remoteDriver;
+        return driver;
     }
 }
