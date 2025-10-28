@@ -1,6 +1,8 @@
 package org.example;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -15,9 +17,13 @@ public class AppTest {
     static public String USER_SURNAME = "Sahov";
     static public String USER_EMAIL = "daniilshahov33@gmail.com";
     static public String USER_GENDER = "Male";
-    static public String USER_DOB = "18 Jun 2006";
+    static public String USER_DOB = "18 June,2006";
     static public String USER_NUMBER = "0123456789";
     static public String USER_SUBJECT = "Maths";
+    static public String USER_HOBBY = "Sports";
+    static public String USER_ADDRESS = "Sarmisegetusa 48";
+    static public String USER_STATE = "NCR";
+    static public String USER_CITY = "Delhi";
 
     @BeforeClass
     public void setUp() {
@@ -28,6 +34,9 @@ public class AppTest {
     @Test
     public void fillFormTest() throws InterruptedException {
         driver.get(URL);
+
+        // Fill the form
+
         FormPom form = new FormPom(driver);
         form.setFirstName(USER_NAME);
         form.setLastName(USER_SURNAME);
@@ -38,7 +47,44 @@ public class AppTest {
         form.setUserNumber(USER_NUMBER);
         form.scrollToDOB();
         form.setUserDOB(USER_DOB);
-//        form.setUserSubject(USER_SUBJECT);
+        form.setUserSubject(USER_SUBJECT);
+        form.setUserHobby(USER_HOBBY);
+        form.setUserAddress(USER_ADDRESS);
+        form.setUserState(USER_STATE);
+        form.setUserCity(USER_CITY);
+        form.clickSubmit();
+
+        // Compare results
+
+        Thread.sleep(1000);
+
+        String fullName = driver.findElement(By.xpath("//tbody//tr[1]/*[2]")).getText();
+        Assert.assertEquals(fullName, (USER_NAME + " " + USER_SURNAME));
+
+        String email = driver.findElement(By.xpath("//tbody//tr[2]/*[2]")).getText();
+        Assert.assertEquals(email, USER_EMAIL);
+
+        String gender = driver.findElement(By.xpath("//tbody//tr[3]/*[2]")).getText();
+        Assert.assertEquals(gender, USER_GENDER);
+
+        String number = driver.findElement(By.xpath("//tbody//tr[4]/*[2]")).getText();
+        Assert.assertEquals(number, USER_NUMBER);
+
+        String dateOfBirth = driver.findElement(By.xpath("//tbody//tr[5]/*[2]")).getText();
+        Assert.assertEquals(dateOfBirth, USER_DOB);
+
+        String subject = driver.findElement(By.xpath("//tbody//tr[6]/*[2]")).getText();
+        Assert.assertEquals(subject, USER_SUBJECT);
+
+        String hobby = driver.findElement(By.xpath("//tbody//tr[7]/*[2]")).getText();
+        Assert.assertEquals(hobby, USER_HOBBY);
+
+        String address = driver.findElement(By.xpath("//tbody//tr[9]/*[2]")).getText();
+        Assert.assertEquals(address, USER_ADDRESS);
+
+        String stateCity = driver.findElement(By.xpath("//tbody//tr[10]/*[2]")).getText();
+        Assert.assertEquals(stateCity, USER_STATE + " " + USER_CITY);
+
         System.out.println();
     }
 

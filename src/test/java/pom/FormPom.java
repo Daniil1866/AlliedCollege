@@ -3,6 +3,10 @@ package pom;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class FormPom {
 
@@ -24,8 +28,20 @@ public class FormPom {
     @FindBy(xpath = "//*[@id='userNumber']")
     WebElement number;
 
-    @FindBy(xpath = "//*[@id='subjectsContainer']")
+    @FindBy(xpath = "//*[@id='subjectsInput']")
     WebElement subject;
+
+    @FindBy(xpath = "//*[@id='state']")
+    WebElement state;
+
+    @FindBy(xpath = "//*[@id='city']")
+    WebElement city;
+
+    @FindBy(xpath = "//*[@id='currentAddress']")
+    WebElement currentAddress;
+
+    @FindBy(xpath = "//*[@id='submit']")
+    WebElement submit;
 
     public FormPom(WebDriver driver) {
         this.driver = driver;
@@ -64,12 +80,40 @@ public class FormPom {
         DOB.sendKeys(Keys.ENTER);
     }
 
+    public void setUserHobby(String hobbyParam) {
+        WebElement hobby = driver.findElement(By.xpath("//*[text() ='" + hobbyParam + "']"));
+        hobby.click();
+    }
+
     public void setUserSubject(String userSubjectParam) throws InterruptedException {
         subject.sendKeys(userSubjectParam);
-        Thread.sleep(1000);
-        subject.click();
+        Thread.sleep(500);
         subject.sendKeys(Keys.ENTER);
-        System.out.println();
+    }
+
+    public void setUserState(String StateParam) {
+        state.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement stateItem = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//*[text()='" + StateParam + "']")));
+        stateItem.click();
+    }
+
+    public void setUserCity(String CityParam) {
+        city.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement cityItem = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//*[text()='" + CityParam + "']")));
+        cityItem.click();
+    }
+
+    public void setUserAddress(String AddressParam) {
+        currentAddress.clear();
+        currentAddress.sendKeys(AddressParam);
+    }
+
+    public void clickSubmit() {
+        submit.click();
     }
 
     public void closeAdvert() {
@@ -90,11 +134,11 @@ public class FormPom {
         js.executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
-    public void scrollToDOB(){
+    public void scrollToDOB() {
         scrollToElement(DOB);
     }
 
-    public void scrollToFirstName(){
+    public void scrollToFirstName() {
         scrollToElement(firstName);
     }
 }
